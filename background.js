@@ -60,6 +60,8 @@ function simulatePopup() {
     iframe.style.borderRadius = "10px";
     iframe.style.margin = "0";
     iframe.style.padding = "0";
+    //allow the iframe to copy to clipboard
+    iframe.setAttribute("allow", "clipboard-write");
 
     // append the iframe to the popup
     popup.appendChild(iframe);
