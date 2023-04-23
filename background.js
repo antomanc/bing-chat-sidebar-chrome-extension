@@ -1,36 +1,35 @@
-// Called when the user clicks on the extension's icon.
+// listen for the extension to be clicked and run the function showPopup
 chrome.action.onClicked.addListener((tab) => {
-  try {
-    chrome.scripting.executeScript(
-      {
-        target: { tabId: tab.id },
-        function: simulatePopup,
-      },
-      () => chrome.runtime.lastError
-    );
-  } catch (e) {}
+  chrome.scripting.executeScript(
+    {
+      target: { tabId: tab.id },
+      function: showPopup,
+    },
+    () => chrome.runtime.lastError
+  );
 });
 
-// function to show/hide the popup
-function simulatePopup() {
+function showPopup(textToInject) {
+  console.log(textToInject);
   try {
     //check if the popup is already open
     var popup = document.querySelector(".popup-bing-ai-unique-class-name");
     if (popup) {
-      //if the popup has the hidden class, show it
+      //if the popup is hidden, show it and return
       if (popup.classList.contains("hidden")) {
         popup.classList.remove("hidden");
         popup.style.transform = "scale(1)";
         return;
       }
-      // if the popup is already open, close it
+      // if the popup is visible, hide it and return
       popup.style.transform = "scale(0)";
-      // add 'hidden' class to the popup to hide it
       popup.classList.add("hidden");
       return;
     }
+    // if the popup doesn't exist, create it
     // create a div element to hold the popup content
     var popup = document.createElement("div");
+    //popup style
     popup.style.position = "fixed";
     popup.style.zIndex = "99999";
     popup.style.top = "0";
@@ -38,7 +37,7 @@ function simulatePopup() {
     popup.style.width = "500px";
     popup.style.height = "600px";
     popup.style.display = "block";
-    popup.style.background = "grey";
+    popup.style.background = "white";
     popup.style.margin = "15px";
     popup.style.borderRadius = "10px";
     popup.style.overflow = "hidden";
@@ -53,13 +52,17 @@ function simulatePopup() {
     // create an iframe element to hold the bing ai page
     var iframe = document.createElement("iframe");
     iframe.src =
-      "https://edgeservices.bing.com/edgediscover/query?&lightschemeovr=2&FORM=SHORUN&udscs=1&udsnav=1&setlang=en-US&features=udssydinternal&clientscopes=windowheader,coauthor,chat,&udsframed=1";
+      "https://edgeservices.bing.com/edgediscover/query?&FORM=SHORUN&udscs=1&udsnav=1&setlang=en-US&features=udssydinternal&clientscopes=windowheader,coauthor,chat,&udsframed=1";
+
+    //iframe style
     iframe.style.width = "100%";
     iframe.style.height = "100%";
     iframe.style.border = "none";
     iframe.style.borderRadius = "10px";
     iframe.style.margin = "0";
     iframe.style.padding = "0";
+    iframe.className = "popup-iframe-bing-ai-unique-class-name";
+
     //allow the iframe to copy to clipboard
     iframe.setAttribute("allow", "clipboard-write");
 
@@ -72,9 +75,7 @@ function simulatePopup() {
     // use setTimeout to show the popup after a small delay
     // this will trigger the CSS transition and animate the transform property
     setTimeout(() => {
-      // set the transform property to scale up the popup to normal size
-      // this will make the popup visible and expand from the top right corner
       popup.style.transform = "scale(1)";
-    }, 50);
+    }, 10);
   } catch (e) {}
 }
