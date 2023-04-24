@@ -1,7 +1,7 @@
 {
   "name": "Bing AI popup",
   "description": "A chrome extension that shows a Bing AI popup in the current tab when you click on the extension icon.",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "manifest_version": 3,
   "background": {
     "service_worker": "background.js"
@@ -13,5 +13,16 @@
     "32": "icon32.png",
     "48": "icon48.png",
     "128": "icon128.png"
-  }
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://edgeservices.bing.com/*"],
+      "js": ["content_iframe.js"],
+      "all_frames": true
+    },
+    {
+      "matches": ["https://*/*", "http://*/*"],
+      "js": ["content.js"]
+    }
+  ]
 }

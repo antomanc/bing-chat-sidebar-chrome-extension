@@ -9,8 +9,8 @@ chrome.action.onClicked.addListener((tab) => {
   );
 });
 
-function showPopup(textToInject) {
-  console.log(textToInject);
+// this function is needed only to open or close the popup when the extension icon is clicked
+function showPopup() {
   try {
     //check if the popup is already open
     var popup = document.querySelector(".popup-bing-ai-unique-class-name");
@@ -79,3 +79,4 @@ function showPopup(textToInject) {
     }, 10);
   } catch (e) {}
 }
+
