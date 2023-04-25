@@ -1,3 +1,6 @@
+# Not working currently
+The url used in the popup, https://edgeservices.bing.com/edgediscover/query... is not working anymore
+
 # Bing AI chrome extension
 A chrome extension that shows a Bing AI popup in the current tab when you click on the extension icon
 
