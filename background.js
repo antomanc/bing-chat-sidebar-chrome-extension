@@ -1,16 +1,23 @@
 // listen for the extension to be clicked and run the function showPopup
 chrome.action.onClicked.addListener((tab) => {
-  chrome.scripting.executeScript(
-    {
-      target: { tabId: tab.id },
-      function: showPopup,
-    },
-    () => chrome.runtime.lastError
-  );
+  // get the value of the "darkModeActive" setting
+  chrome.storage.sync.get("darkModeActive", (result) => {
+    const darkModeActive = result.darkModeActive;
+    // pass the value of "darkModeActive" as an argument to "showPopup"
+    chrome.scripting.executeScript(
+      {
+        target: { tabId: tab.id },
+        args: [darkModeActive],
+        function: showPopup,
+      },
+      () => chrome.runtime.lastError
+    );
+  });
 });
 
 // this function is needed only to open or close the popup when the extension icon is clicked
-function showPopup() {
+function showPopup(darkMode) {
+  console.log(darkMode);
   try {
     //check if the popup is already open
     var popup = document.querySelector(".popup-bing-ai-unique-class-name");
@@ -37,11 +44,14 @@ function showPopup() {
     popup.style.width = "500px";
     popup.style.height = "600px";
     popup.style.display = "block";
-    popup.style.background = "white";
+    if (darkMode) {
+      popup.style.background = "rgb(43,43,43)";
+    } else {
+      popup.style.background = "white";
+    }
     popup.style.margin = "15px";
     popup.style.borderRadius = "10px";
     popup.style.overflow = "hidden";
-    popup.style.border = "1px solid black";
     popup.className = "popup-bing-ai-unique-class-name";
     popup.style.transformOrigin = "top right";
     popup.style.transform = "scale(0)";
@@ -51,9 +61,11 @@ function showPopup() {
 
     // create an iframe element to hold the bing ai page
     var iframe = document.createElement("iframe");
-    iframe.src =
-      "https://edgeservices.bing.com/edgediscover/query?&FORM=SHORUN&udscs=1&udsnav=1&setlang=en-US&features=udssydinternal&clientscopes=windowheader,coauthor,chat,&udsframed=1";
-
+    var darkModeValue = "darkschemeovr";
+    if (!darkMode) {
+      darkModeValue = "lightschemeovr";
+    }
+    iframe.src = `https://edgeservices.bing.com/edgediscover/query?&FORM=SHORUN&udscs=1&udsnav=1&setlang=en-US&${darkModeValue}=1&features=udssydinternal&clientscopes=windowheader,coauthor,chat,&udsframed=1`;
     //iframe style
     iframe.style.width = "100%";
     iframe.style.height = "100%";
@@ -64,7 +76,7 @@ function showPopup() {
     iframe.className = "popup-iframe-bing-ai-unique-class-name";
 
     //allow the iframe to copy to clipboard
-    iframe.setAttribute("allow", "clipboard-write");
+    iframe.setAttribute("allow", "clipboard-read *; clipboard-write");
 
     // append the iframe to the popup
     popup.appendChild(iframe);

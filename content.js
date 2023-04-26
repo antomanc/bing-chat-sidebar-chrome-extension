@@ -1,5 +1,21 @@
-//listen for mouseup and call showTextPopup function and send the event object to it
-document.addEventListener("mouseup", showTextPopup);
+// get the popup setting value from the storage
+chrome.storage.sync.get("popupActive", function (result) {
+  if (result.popupActive == undefined || result.popupActive == true) {
+    //listen for mouseup and call showTextPopup function and send the event object to it
+    document.addEventListener("mouseup", showTextPopup);
+  }
+});
+
+//variable to hold the dark mode setting value
+var darkMode = true;
+//get the dark mode setting value from the storage
+chrome.storage.sync.get("darkModeActive", function (result) {
+  if (result.darkModeActive == undefined) {
+    darkMode = true;
+  } else {
+    darkMode = result.darkModeActive;
+  }
+});
 
 // function to show the text popup
 function showTextPopup(event) {
@@ -58,6 +74,7 @@ function showTextPopup(event) {
 
 // function to show the bing ai popup
 function showPopup(prompt, textToInject) {
+  console.log(darkMode);
   try {
     //check if the popup is already open
     var popup = document.querySelector(".popup-bing-ai-unique-class-name");
@@ -97,7 +114,11 @@ function showPopup(prompt, textToInject) {
     popup.style.width = "500px";
     popup.style.height = "600px";
     popup.style.display = "block";
-    popup.style.background = "white";
+    if (darkMode) {
+      popup.style.background = "rgb(43,43,43)";
+    } else {
+      popup.style.background = "white";
+    }
     popup.style.margin = "15px";
     popup.style.borderRadius = "10px";
     popup.style.overflow = "hidden";
@@ -111,9 +132,12 @@ function showPopup(prompt, textToInject) {
 
     // create an iframe element to hold the bing ai page
     var iframe = document.createElement("iframe");
-    // this is the url of the bing ai page
-    iframe.src =
-      "https://edgeservices.bing.com/edgediscover/query?&FORM=SHORUN&udscs=1&udsnav=1&setlang=en-US&features=udssydinternal&clientscopes=windowheader,coauthor,chat,&udsframed=1";
+
+    var darkModeValue = "darkschemeovr";
+    if (!darkMode) {
+      darkModeValue = "lightschemeovr";
+    }
+    iframe.src = `https://edgeservices.bing.com/edgediscover/query?&FORM=SHORUN&udscs=1&udsnav=1&setlang=en-US&${darkModeValue}=1&features=udssydinternal&clientscopes=windowheader,coauthor,chat,&udsframed=1`;
 
     iframe.style.width = "100%";
     iframe.style.height = "100%";
