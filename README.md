@@ -2,7 +2,8 @@
 A chrome extension that shows a Bing AI popup in the current tab when you click on the extension icon
 
 # Update
-Now when some text is selected, you will have 4 differents options of prompts to send directly to the bing popup.
+1. Now when some text is selected, you will have 4 differents options of prompts to send directly to the bing popup.
+2. The settings page is now avaible
 
 # Install instructions:
 
