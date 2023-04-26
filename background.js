@@ -67,6 +67,11 @@ function showPopup(darkMode) {
     }
     iframe.src = `https://edgeservices.bing.com/edgediscover/query?&FORM=SHORUN&udscs=1&udsnav=1&setlang=en-US&${darkModeValue}=1&features=udssydinternal&clientscopes=windowheader,coauthor,chat,&udsframed=1`;
     //iframe style
+    if (darkMode) {
+      iframe.style.background = "rgb(43,43,43)";
+    } else {
+      iframe.style.background = "white";
+    }
     iframe.style.width = "100%";
     iframe.style.height = "100%";
     iframe.style.border = "none";
