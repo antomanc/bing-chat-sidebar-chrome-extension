@@ -44,12 +44,16 @@ function showTextPopup(event) {
     popup.style.position = "absolute";
     popup.style.zIndex = "99999";
     popup.style.top = event.pageY + "px";
-    popup.style.left = event.pageX + 5 + "px";
+    popup.style.left = event.pageX + "px";
     popup.style.overflow = "hidden";
     popup.style.background = "white";
     popup.style.borderRadius = "5px";
     popup.style.boxShadow =
       "rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset";
+    popup.style.display = "flex";
+    popup.style.flexDirection = "row";
+    popup.style.alignItems = "center";
+    popup.style.justifyContent = "space-around";
     popup.className = "popup-selectedtext-bing-ai-unique-class-name";
     // set the id of the popup to the text that is selected
     popup.id = textHighlighted;
@@ -62,6 +66,11 @@ function showTextPopup(event) {
         `;
     //append the popup to the parent of the body element
     document.body.parentNode.appendChild(popup);
+    // if the popup appears to the right side of the screen out of the viewport, make it appear to the left side of the cursor
+    if (popup.getBoundingClientRect().right > window.innerWidth) {
+      popup.style.left =
+        event.pageX - popup.getBoundingClientRect().width + "px";
+    }
     //add an event listener to the popup
     popup.addEventListener("click", function (event) {
       // get the id of the button that was clicked (that is the prompt) and send it to the showPopup function along with the text that was selected
