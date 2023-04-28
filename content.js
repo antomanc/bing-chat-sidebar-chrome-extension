@@ -38,8 +38,7 @@ function showTextPopup(event) {
     popup.remove();
   }
   var textHighlighted = window.getSelection().toString();
-
-  if (textHighlighted.length > 0 && textHighlighted.length < 1950) {
+  if (textHighlighted.length > 0) {
     //create a div element to hold the popup content
     var popup = document.createElement("div");
     popup.style.position = "absolute";
@@ -67,6 +66,11 @@ function showTextPopup(event) {
     popup.addEventListener("click", function (event) {
       // get the id of the button that was clicked (that is the prompt) and send it to the showPopup function along with the text that was selected
       showPopup(event.target.id, textHighlighted);
+          if (window.getSelection) {
+        window.getSelection().removeAllRanges();
+    } else if (document.selection) {
+        document.selection.empty();
+    }
       popup.remove();
     });
   }
