@@ -20,7 +20,8 @@ function showPopup(darkMode) {
   console.log(darkMode);
   try {
     //check if the popup is already open
-    var popup = document.querySelector(".popup-bing-ai-unique-class-name");
+    let popup = document.querySelector(".popup-bing-ai-unique-class-name");
+
     if (popup) {
       //if the popup is hidden, show it and return
       if (popup.classList.contains("hidden")) {
@@ -33,9 +34,10 @@ function showPopup(darkMode) {
       popup.classList.add("hidden");
       return;
     }
+
     // if the popup doesn't exist, create it
     // create a div element to hold the popup content
-    var popup = document.createElement("div");
+    popup = document.createElement("div");
     //popup style
     popup.style.position = "fixed";
     popup.style.zIndex = "99999";
@@ -60,8 +62,8 @@ function showPopup(darkMode) {
     popup.style.transition = "transform 0.2s ease-in-out";
 
     // create an iframe element to hold the bing ai page
-    var iframe = document.createElement("iframe");
-    var darkModeValue = "darkschemeovr";
+    const iframe = document.createElement("iframe");
+    const darkModeValue = "darkschemeovr";
     if (!darkMode) {
       darkModeValue = "lightschemeovr";
     }
@@ -96,4 +98,3 @@ function showPopup(darkMode) {
     }, 10);
   } catch (e) {}
 }
-

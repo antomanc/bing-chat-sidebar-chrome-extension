@@ -7,7 +7,7 @@ chrome.storage.sync.get("popupActive", function (result) {
 });
 
 //variable to hold the dark mode setting value
-var darkMode = true;
+let darkMode = true;
 //get the dark mode setting value from the storage
 chrome.storage.sync.get("darkModeActive", function (result) {
   if (result.darkModeActive == undefined) {
@@ -19,7 +19,7 @@ chrome.storage.sync.get("darkModeActive", function (result) {
 
 // function to show the text popup
 function showTextPopup(event) {
-  var popup = document.querySelector(
+  let popup = document.querySelector(
     ".popup-selectedtext-bing-ai-unique-class-name"
   );
   // if the click is on the popup, return
@@ -37,10 +37,10 @@ function showTextPopup(event) {
     }
     popup.remove();
   }
-  var textHighlighted = window.getSelection().toString();
+  const textHighlighted = window.getSelection().toString();
   if (textHighlighted.length > 0) {
     //create a div element to hold the popup content
-    var popup = document.createElement("div");
+    popup = document.createElement("div");
     popup.style.position = "absolute";
     popup.style.zIndex = "99999";
     popup.style.top = event.pageY + "px";
@@ -90,14 +90,14 @@ function showPopup(prompt, textToInject) {
   console.log(darkMode);
   try {
     //check if the popup is already open
-    var popup = document.querySelector(".popup-bing-ai-unique-class-name");
+    let popup = document.querySelector(".popup-bing-ai-unique-class-name");
     if (popup) {
       //if injectedText is not empty
       if (textToInject) {
         popup.classList.remove("hidden");
         popup.style.transform = "scale(1)";
         //get the iframe element
-        var iframe = popup.querySelector("iframe");
+        const iframe = popup.querySelector("iframe");
         // send a message to the iframe to inject the text
         // this message will be received in the script loaded in the iframe
         iframe.contentWindow.postMessage(
@@ -119,7 +119,7 @@ function showPopup(prompt, textToInject) {
     }
     // if the popup doesn't exist, create it
     // create a div element to hold the popup content
-    var popup = document.createElement("div");
+    popup = document.createElement("div");
     popup.style.position = "fixed";
     popup.style.zIndex = "99999";
     popup.style.top = "0";
@@ -144,9 +144,9 @@ function showPopup(prompt, textToInject) {
     popup.style.transition = "transform 0.2s ease-in-out";
 
     // create an iframe element to hold the bing ai page
-    var iframe = document.createElement("iframe");
+    const iframe = document.createElement("iframe");
 
-    var darkModeValue = "darkschemeovr";
+    let darkModeValue = "darkschemeovr";
     if (!darkMode) {
       darkModeValue = "lightschemeovr";
     }
@@ -181,7 +181,7 @@ function showPopup(prompt, textToInject) {
       // this check is needed because the if the popup is just created, it could also be called with a textToInject parameter
       if (textToInject) {
         //get the iframe element
-        var iframe = popup.querySelector("iframe");
+        const iframe = popup.querySelector("iframe");
         //wait for the iframe to load
         iframe.addEventListener("load", function () {
           // we wait a second to make sure the iframe is fully loaded, maybe this is not needed
