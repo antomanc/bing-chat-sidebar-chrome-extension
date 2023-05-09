@@ -15,12 +15,12 @@ function injectText(text) {
     return;
   }
   // select all the elements needed to get to the text area
-  var firstElement = document.querySelector(".cib-serp-main").shadowRoot;
-  var secondElement = firstElement.querySelector(
+  const firstElement = document.querySelector(".cib-serp-main").shadowRoot;
+  const secondElement = firstElement.querySelector(
     "#cib-action-bar-main"
   ).shadowRoot;
   // get the text area
-  var textArea = secondElement.querySelector("textarea");
+  const textArea = secondElement.querySelector("textarea");
   // set the text area value to the text to inject
   textArea.value = text;
   // trigger the event to update the text area
