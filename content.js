@@ -174,14 +174,11 @@ function showPopup(prompt, textToInject) {
     document.body.parentNode.appendChild(popup);
 
     const iframeLoadEventHandler = () => {
-      // we wait a second to make sure the iframe is fully loaded, maybe this is not needed
-      setTimeout(() => {
-        // send a message to the iframe to inject the text
-        iframe.contentWindow.postMessage(
-          { textToInject: textToInject, prompt: prompt },
-          "*"
-        );
-      }, 1000);
+      // send a message to the iframe to inject the text
+      iframe.contentWindow.postMessage(
+        { textToInject: textToInject, prompt: prompt },
+        "*"
+      );
     }
 
     // this will trigger the CSS transition and animate the transform property
