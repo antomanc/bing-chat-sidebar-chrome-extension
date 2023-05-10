@@ -87,10 +87,7 @@ function showPopup(darkMode) {
     // append the popup element to the document body
     document.body.parentNode.appendChild(popup);
 
-    // use setTimeout to show the popup after a small delay
     // this will trigger the CSS transition and animate the transform property
-    setTimeout(() => {
-      popup.style.transform = "scale(1)";
-    }, 10);
+    popup.style.transform = "scale(1)";
   } catch (e) {}
 }

@@ -184,17 +184,14 @@ function showPopup(prompt, textToInject) {
       }, 1000);
     }
 
-    // use setTimeout to show the popup after a small delay
     // this will trigger the CSS transition and animate the transform property
-    setTimeout(() => {
-      popup.style.transform = "scale(1)";
-      // this check is needed because the if the popup is just created, it could also be called with a textToInject parameter
-      if (textToInject) {
-        //get the iframe element
-        const iframe = popup.querySelector("iframe");
-        //wait for the iframe to load
-        iframe.addEventListener("load", iframeLoadEventHandler);
-      }
-    }, 10);
+    popup.style.transform = "scale(1)";
+    // this check is needed because the if the popup is just created, it could also be called with a textToInject parameter
+    if (textToInject) {
+      //get the iframe element
+      const iframe = popup.querySelector("iframe");
+      //wait for the iframe to load
+      iframe.addEventListener("load", iframeLoadEventHandler);
+    }
   } catch (e) {}
 }
