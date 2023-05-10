@@ -29,10 +29,10 @@ darkModeCheckBox.addEventListener("change", darkModeCheckboxChangeEventHandler);
 
 // function to set the dark mode value
 const setDarkMode = (value) => {
-  chrome.storage.sync.set({ darkModeActive: value }, function () {});
+  chrome.storage.sync.set({ darkModeActive: value });
 };
 
 // function to set the popup value
 const setPopup = (value) => {
-  chrome.storage.sync.set({ popupActive: value }, function () {});
+  chrome.storage.sync.set({ popupActive: value });
 };
