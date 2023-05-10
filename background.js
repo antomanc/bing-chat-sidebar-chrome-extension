@@ -1,12 +1,12 @@
 // listen for the extension to be clicked and run the function showPopup
-const actionClickHandler = (tab) => {
-  chrome.storage.sync.get("darkModeActive", () => {
+const actionClickHandler = ({ id: tabId }) => {
+  chrome.storage.sync.get("darkModeActive", (result) => {
     const { darkModeActive } = result;
 
     // pass the value of "darkModeActive" as an argument to "showPopup"
     chrome.scripting.executeScript(
       {
-        target: { tabId: tab.id },
+        target: { tabId },
         args: [darkModeActive ? true : false],
         function: showPopup,
       },
