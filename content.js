@@ -147,11 +147,8 @@ function showPopup(prompt, textToInject) {
 
     // create an iframe element to hold the bing ai page
     const iframe = document.createElement("iframe");
+    const darkModeValue = darkMode ? "darkschemeovr" : "lightschemeovr";
 
-    let darkModeValue = "darkschemeovr";
-    if (!darkMode) {
-      darkModeValue = "lightschemeovr";
-    }
     iframe.src = `https://edgeservices.bing.com/edgediscover/query?&FORM=SHORUN&udscs=1&udsnav=1&setlang=en-US&${darkModeValue}=1&features=udssydinternal&clientscopes=windowheader,coauthor,chat,&udsframed=1`;
 
     iframe.style.cssText = `
