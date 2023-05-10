@@ -38,28 +38,26 @@ function showPopup(darkMode) {
     // if the popup doesn't exist, create it
     // create a div element to hold the popup content
     popup = document.createElement("div");
-    //popup style
-    popup.style.position = "fixed";
-    popup.style.zIndex = "99999";
-    popup.style.top = "0";
-    popup.style.right = "0";
-    popup.style.width = "500px";
-    popup.style.height = "600px";
-    popup.style.display = "block";
-    if (darkMode) {
-      popup.style.background = "rgb(43,43,43)";
-    } else {
-      popup.style.background = "white";
-    }
-    popup.style.margin = "15px";
-    popup.style.borderRadius = "10px";
-    popup.style.overflow = "hidden";
+
+    popup.style.cssText = `
+      position: fixed;
+      z-index: 99999;
+      top: 0;
+      right: 0;
+      width: 500px;
+      height: 600px;
+      display: block;
+      background: ${darkMode ? "rgb(43, 43, 43)" : "white"};
+      margin: 15px;
+      border-radius: 10px;
+      overflow: hidden;
+      transform-origin: top right;
+      transform: scale(0);
+      box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+      transition: transform 0.2s ease-in-out;
+    `;
+
     popup.className = "popup-bing-ai-unique-class-name";
-    popup.style.transformOrigin = "top right";
-    popup.style.transform = "scale(0)";
-    popup.style.boxShadow =
-      "rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px";
-    popup.style.transition = "transform 0.2s ease-in-out";
 
     // create an iframe element to hold the bing ai page
     const iframe = document.createElement("iframe");
@@ -68,18 +66,17 @@ function showPopup(darkMode) {
       darkModeValue = "lightschemeovr";
     }
     iframe.src = `https://edgeservices.bing.com/edgediscover/query?&FORM=SHORUN&udscs=1&udsnav=1&setlang=en-US&${darkModeValue}=1&features=udssydinternal&clientscopes=windowheader,coauthor,chat,&udsframed=1`;
-    //iframe style
-    if (darkMode) {
-      iframe.style.background = "rgb(43,43,43)";
-    } else {
-      iframe.style.background = "white";
-    }
-    iframe.style.width = "100%";
-    iframe.style.height = "100%";
-    iframe.style.border = "none";
-    iframe.style.borderRadius = "10px";
-    iframe.style.margin = "0";
-    iframe.style.padding = "0";
+    iframe.style.cssText = `
+      background: ${darkMode ? "rgb(43, 43, 43)" : "white"};
+      width: 100%;
+      height: 100%;
+      border: none;
+      border-radius: 10px;
+      margin: 0;
+      padding: 0;
+      background: ${darkMode ? "rgb(43, 43, 43)" : "white"};
+    `;
+
     iframe.className = "popup-iframe-bing-ai-unique-class-name";
 
     //allow the iframe to copy to clipboard
