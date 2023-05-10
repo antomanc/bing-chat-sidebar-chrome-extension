@@ -6,7 +6,7 @@ const messageListener = (event) => {
 window.addEventListener("message", messageListener, false);
 
 // function to inject text into the text area and send the message
-function injectText(text) {
+const injectText = (text) => {
   // if the text is empty or not a string, or NaN, return
   if (!text || typeof text !== "string" || text == "NaN") {
     return;
@@ -28,7 +28,7 @@ function injectText(text) {
 }
 
 // function to transform the short prompt to the full prompt text
-function promptToText(prompt) {
+const promptToText = (prompt) => {
   if (prompt === 'summarize') {
     return 'Summarize the following text: ';
   } else if (prompt === 'answer') {

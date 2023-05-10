@@ -16,7 +16,7 @@ const darkModeGetCallback = (result) => {
 chrome.storage.sync.get("darkModeActive", darkModeGetCallback);
 
 // function to show the text popup
-function showTextPopup(event) {
+const showTextPopup = (event) => {
   let popup = document.querySelector(
     ".popup-selectedtext-bing-ai-unique-class-name"
   );
@@ -87,10 +87,10 @@ function showTextPopup(event) {
     //add an event listener to the popup
     popup.addEventListener("click", popupClickHandler);
   }
-}
+};
 
 // function to show the bing ai popup
-function showPopup(prompt, textToInject) {
+const showPopup = (prompt, textToInject) => {
   console.log(darkMode);
   try {
     //check if the popup is already open
@@ -191,4 +191,4 @@ function showPopup(prompt, textToInject) {
       iframe.addEventListener("load", iframeLoadEventHandler);
     }
   } catch (e) {}
-}
+};

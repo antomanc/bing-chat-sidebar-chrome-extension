@@ -17,7 +17,7 @@ chrome.action.onClicked.addListener((tab) => {
 });
 
 // this function is needed only to open or close the popup when the extension icon is clicked
-function showPopup(darkMode) {
+const showPopup = (darkMode) => {
   console.log(darkMode);
   try {
     //check if the popup is already open
@@ -90,4 +90,4 @@ function showPopup(darkMode) {
     // this will trigger the CSS transition and animate the transform property
     popup.style.transform = "scale(1)";
   } catch (e) {}
-}
+};
