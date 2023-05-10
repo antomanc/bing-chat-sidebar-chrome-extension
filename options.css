@@ -1,3 +1,15 @@
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: rgb(43,43,43);
+  color: white;
+  margin: 0;
+  padding: 0;
+}
+
 /* The switch - the box around the slider */
 .switch {
   position: relative;
