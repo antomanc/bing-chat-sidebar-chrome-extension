@@ -11,7 +11,7 @@ window.addEventListener(
 // function to inject text into the text area and send the message
 function injectText(text) {
   // if the text is empty or not a string, or NaN, return
-  if (!text || typeof text !== "string" || text == NaN || text == "NaN") {
+  if (!text || typeof text !== "string" || text == "NaN") {
     return;
   }
   // select all the elements needed to get to the text area
