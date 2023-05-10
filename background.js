@@ -2,7 +2,8 @@
 chrome.action.onClicked.addListener((tab) => {
   // get the value of the "darkModeActive" setting
   chrome.storage.sync.get("darkModeActive", (result) => {
-    const darkModeActive = result.darkModeActive;
+    const { darkModeActive } = result;
+
     // pass the value of "darkModeActive" as an argument to "showPopup"
     chrome.scripting.executeScript(
       {
