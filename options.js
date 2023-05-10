@@ -3,20 +3,12 @@ const darkModeCheckBox = document.getElementById("darkModeActive");
 
 // set the popup checkbox to the value stored in chrome storage or to true if it doesn't exist
 chrome.storage.sync.get(["popupActive"], function (result) {
-  if (result.popupActive == undefined) {
-    popupCheckBox.checked = true;
-  } else {
-    popupCheckBox.checked = result.popupActive;
-  }
+  popupCheckBox.checked = result.popupActive ?? true;
 });
 
 // set the dark mode checkbox to the value stored in chrome storage or to false if it doesn't exist
 chrome.storage.sync.get(["darkModeActive"], function (result) {
-  if (result.darkModeActive == undefined) {
-    darkModeCheckBox.checked = false;
-  } else {
-    darkModeCheckBox.checked = result.darkModeActive;
-  }
+  darkModeCheckBox.checked = result.darkModeActive ?? false;
 });
 
 // add an onchange event listener to the popup checkbox
