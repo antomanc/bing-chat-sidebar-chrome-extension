@@ -1,7 +1,6 @@
 // listen for the extension to be clicked and run the function showPopup
-chrome.action.onClicked.addListener((tab) => {
-  // get the value of the "darkModeActive" setting
-  chrome.storage.sync.get("darkModeActive", (result) => {
+const actionClickHandler = (tab) => {
+  chrome.storage.sync.get("darkModeActive", () => {
     const { darkModeActive } = result;
 
     // pass the value of "darkModeActive" as an argument to "showPopup"
@@ -14,7 +13,8 @@ chrome.action.onClicked.addListener((tab) => {
       () => chrome.runtime.lastError
     );
   });
-});
+};
+chrome.action.onClicked.addListener(actionClickHandler);
 
 // this function is needed only to open or close the popup when the extension icon is clicked
 const showPopup = (darkMode) => {
