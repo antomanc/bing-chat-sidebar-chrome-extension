@@ -43,18 +43,18 @@ function showTextPopup(event) {
     popup = document.createElement("div");
 
     popup.style.cssText = `
-        position: absolute;
-        z-index: 99999;
-        top: ${event.pageY}px;
-        left: ${event.pageX}px;
-        overflow: hidden;
-        background: white;
-        border-radius: 5px;
-        box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-around;
+      position: absolute;
+      z-index: 99999;
+      top: ${event.pageY}px;
+      left: ${event.pageX}px;
+      overflow: hidden;
+      background: white;
+      border-radius: 5px;
+      box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-around;
     `;
 
     popup.className = "popup-selectedtext-bing-ai-unique-class-name";
@@ -78,11 +78,11 @@ function showTextPopup(event) {
     popup.addEventListener("click", function (event) {
       // get the id of the button that was clicked (that is the prompt) and send it to the showPopup function along with the text that was selected
       showPopup(event.target.id, textHighlighted);
-          if (window.getSelection) {
+      if (window.getSelection) {
         window.getSelection().removeAllRanges();
-    } else if (document.selection) {
-        document.selection.empty();
-    }
+      } else if (document.selection) {
+          document.selection.empty();
+      }
       popup.remove();
     });
   }
