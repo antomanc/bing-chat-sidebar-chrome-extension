@@ -1,17 +1,14 @@
 //listen for a windows message and print it to the console
-window.addEventListener(
-  "message",
-  function (event) {
-    // before injecting the text, transform the short prompt to the full prompt text and add it to the text to inject
-    injectText(promptToText(event.data.prompt) + event.data.textToInject);
-  },
-  false
-);
+const messageListener = (event) => {
+  injectText(promptToText(event.data.prompt) + event.data.textToInject);
+};
+
+window.addEventListener("message", messageListener, false);
 
 // function to inject text into the text area and send the message
-function injectText(text) {
+const injectText = (text) => {
   // if the text is empty or not a string, or NaN, return
-  if (!text || typeof text !== "string" || text == NaN || text == "NaN") {
+  if (!text || typeof text !== "string" || text == "NaN") {
     return;
   }
   // select all the elements needed to get to the text area
@@ -31,17 +28,14 @@ function injectText(text) {
 }
 
 // function to transform the short prompt to the full prompt text
-function promptToText(prompt) {
-  if (prompt == "summarize") {
-    return "Summarize the following text: ";
-  }
-  if (prompt == "answer") {
-    return "Answer the following question: ";
-  }
-  if (prompt == "explain") {
-    return "Explain this: ";
-  }
-  if (prompt == "translate") {
-    return "Translate the following text: ";
+const promptToText = (prompt) => {
+  if (prompt === 'summarize') {
+    return 'Summarize the following text: ';
+  } else if (prompt === 'answer') {
+    return 'Answer the following question: ';
+  } else if (prompt === 'explain') {
+    return 'Explain this: ';
+  } else if (prompt === 'translate') {
+    return 'Translate the following text: ';
   }
 }

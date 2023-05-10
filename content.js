@@ -1,24 +1,22 @@
 // get the popup setting value from the storage
-chrome.storage.sync.get("popupActive", function (result) {
+const popupActiveCallback = (result) => {
   if (result.popupActive == undefined || result.popupActive == true) {
     //listen for mouseup and call showTextPopup function and send the event object to it
     document.addEventListener("mouseup", showTextPopup);
   }
-});
+};
+chrome.storage.sync.get("popupActive", popupActiveCallback);
 
 //variable to hold the dark mode setting value
 let darkMode = true;
+const darkModeGetCallback = (result) => {
+  darkMode = result.darkModeActive ?? true;
+};
 //get the dark mode setting value from the storage
-chrome.storage.sync.get("darkModeActive", function (result) {
-  if (result.darkModeActive == undefined) {
-    darkMode = true;
-  } else {
-    darkMode = result.darkModeActive;
-  }
-});
+chrome.storage.sync.get("darkModeActive", darkModeGetCallback);
 
 // function to show the text popup
-function showTextPopup(event) {
+const showTextPopup = (event) => {
   let popup = document.querySelector(
     ".popup-selectedtext-bing-ai-unique-class-name"
   );
@@ -41,19 +39,22 @@ function showTextPopup(event) {
   if (textHighlighted.length > 0) {
     //create a div element to hold the popup content
     popup = document.createElement("div");
-    popup.style.position = "absolute";
-    popup.style.zIndex = "99999";
-    popup.style.top = event.pageY + "px";
-    popup.style.left = event.pageX + "px";
-    popup.style.overflow = "hidden";
-    popup.style.background = "white";
-    popup.style.borderRadius = "5px";
-    popup.style.boxShadow =
-      "rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset";
-    popup.style.display = "flex";
-    popup.style.flexDirection = "row";
-    popup.style.alignItems = "center";
-    popup.style.justifyContent = "space-around";
+
+    popup.style.cssText = `
+      position: absolute;
+      z-index: 99999;
+      top: ${event.pageY}px;
+      left: ${event.pageX}px;
+      overflow: hidden;
+      background: white;
+      border-radius: 5px;
+      box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-around;
+    `;
+
     popup.className = "popup-selectedtext-bing-ai-unique-class-name";
     // set the id of the popup to the text that is selected
     popup.id = textHighlighted;
@@ -71,23 +72,25 @@ function showTextPopup(event) {
       popup.style.left =
         event.pageX - popup.getBoundingClientRect().width + "px";
     }
-    //add an event listener to the popup
-    popup.addEventListener("click", function (event) {
+
+    const popupClickHandler = (event) => {
       // get the id of the button that was clicked (that is the prompt) and send it to the showPopup function along with the text that was selected
       showPopup(event.target.id, textHighlighted);
-          if (window.getSelection) {
+      if (window.getSelection) {
         window.getSelection().removeAllRanges();
-    } else if (document.selection) {
-        document.selection.empty();
-    }
+      } else if (document.selection) {
+          document.selection.empty();
+      }
       popup.remove();
-    });
+    };
+
+    //add an event listener to the popup
+    popup.addEventListener("click", popupClickHandler);
   }
-}
+};
 
 // function to show the bing ai popup
-function showPopup(prompt, textToInject) {
-  console.log(darkMode);
+const showPopup = (prompt, textToInject) => {
   try {
     //check if the popup is already open
     let popup = document.querySelector(".popup-bing-ai-unique-class-name");
@@ -120,49 +123,44 @@ function showPopup(prompt, textToInject) {
     // if the popup doesn't exist, create it
     // create a div element to hold the popup content
     popup = document.createElement("div");
-    popup.style.position = "fixed";
-    popup.style.zIndex = "99999";
-    popup.style.top = "0";
-    popup.style.right = "0";
-    popup.style.width = "500px";
-    popup.style.height = "600px";
-    popup.style.display = "block";
-    if (darkMode) {
-      popup.style.background = "rgb(43,43,43)";
-    } else {
-      popup.style.background = "white";
-    }
-    popup.style.margin = "15px";
-    popup.style.borderRadius = "10px";
-    popup.style.overflow = "hidden";
-    popup.style.border = "1px solid black";
+
+    popup.style.cssText = `
+      position: fixed;
+      z-index: 99999;
+      top: 0;
+      right: 0;
+      width: 500px;
+      height: 600px;
+      display: block;
+      background: ${darkMode ? "rgb(43, 43, 43)" : "white"};
+      margin: 15px;
+      border-radius: 10px;
+      border: 1px solid black;
+      overflow: hidden;
+      transform-origin: top right;
+      transform: scale(0);
+      box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+      transition: transform 0.2s ease-in-out;
+    `;
+
     popup.className = "popup-bing-ai-unique-class-name";
-    popup.style.transformOrigin = "top right";
-    popup.style.transform = "scale(0)";
-    popup.style.boxShadow =
-      "rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px";
-    popup.style.transition = "transform 0.2s ease-in-out";
 
     // create an iframe element to hold the bing ai page
     const iframe = document.createElement("iframe");
+    const darkModeValue = darkMode ? "darkschemeovr" : "lightschemeovr";
 
-    let darkModeValue = "darkschemeovr";
-    if (!darkMode) {
-      darkModeValue = "lightschemeovr";
-    }
     iframe.src = `https://edgeservices.bing.com/edgediscover/query?&FORM=SHORUN&udscs=1&udsnav=1&setlang=en-US&${darkModeValue}=1&features=udssydinternal&clientscopes=windowheader,coauthor,chat,&udsframed=1`;
 
-    iframe.style.width = "100%";
-    if (darkMode) {
-      iframe.style.background = "rgb(43,43,43)";
-    } else {
-      iframe.style.background = "white";
-    }
-    iframe.style.height = "100%";
-    iframe.style.border = "none";
-    iframe.style.borderRadius = "10px";
-    iframe.style.margin = "0";
-    iframe.style.padding = "0";
+    iframe.style.cssText = `
+      width: 100%;
+      background: ${darkMode ? "rgb(43, 43, 43)" : "white"};
+      height: 100%;
+      border: none;
+      border-radius: 10px;
+      margin: 0;
+      padding: 0;
+    `;
+
     iframe.className = "popup-iframe-bing-ai-unique-class-name";
 
     //allow the iframe to copy to clipboard
@@ -174,26 +172,26 @@ function showPopup(prompt, textToInject) {
     // append the popup element to the document body
     document.body.parentNode.appendChild(popup);
 
-    // use setTimeout to show the popup after a small delay
+    const iframeLoadEventHandler = () => {
+      setTimeout(() => {
+        // send a message to the iframe to inject the text
+        iframe.contentWindow.postMessage(
+          { textToInject: textToInject, prompt: prompt },
+          "*"
+        );
+      }, 1000);
+    }
+
     // this will trigger the CSS transition and animate the transform property
-    setTimeout(() => {
-      popup.style.transform = "scale(1)";
-      // this check is needed because the if the popup is just created, it could also be called with a textToInject parameter
-      if (textToInject) {
-        //get the iframe element
-        const iframe = popup.querySelector("iframe");
-        //wait for the iframe to load
-        iframe.addEventListener("load", function () {
-          // we wait a second to make sure the iframe is fully loaded, maybe this is not needed
-          setTimeout(() => {
-            // send a message to the iframe to inject the text
-            iframe.contentWindow.postMessage(
-              { textToInject: textToInject, prompt: prompt },
-              "*"
-            );
-          }, 1000);
-        });
-      }
-    }, 10);
-  } catch (e) {}
-}
+    popup.style.transform = "scale(1)";
+    // this check is needed because the if the popup is just created, it could also be called with a textToInject parameter
+    if (textToInject) {
+      //get the iframe element
+      const iframe = popup.querySelector("iframe");
+      //wait for the iframe to load
+      iframe.addEventListener("load", iframeLoadEventHandler);
+    }
+  } catch (e) {
+    console.error(e);
+  }
+};
