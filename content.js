@@ -91,7 +91,6 @@ const showTextPopup = (event) => {
 
 // function to show the bing ai popup
 const showPopup = (prompt, textToInject) => {
-  console.log(darkMode);
   try {
     //check if the popup is already open
     let popup = document.querySelector(".popup-bing-ai-unique-class-name");
