@@ -32,16 +32,13 @@ function injectText(text) {
 
 // function to transform the short prompt to the full prompt text
 function promptToText(prompt) {
-  if (prompt == "summarize") {
-    return "Summarize the following text: ";
-  }
-  if (prompt == "answer") {
-    return "Answer the following question: ";
-  }
-  if (prompt == "explain") {
-    return "Explain this: ";
-  }
-  if (prompt == "translate") {
-    return "Translate the following text: ";
+  if (prompt === 'summarize') {
+    return 'Summarize the following text: ';
+  } else if (prompt === 'answer') {
+    return 'Answer the following question: ';
+  } else if (prompt === 'explain') {
+    return 'Explain this: ';
+  } else if (prompt === 'translate') {
+    return 'Translate the following text: ';
   }
 }
