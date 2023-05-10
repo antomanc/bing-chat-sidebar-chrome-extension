@@ -191,5 +191,7 @@ const showPopup = (prompt, textToInject) => {
       //wait for the iframe to load
       iframe.addEventListener("load", iframeLoadEventHandler);
     }
-  } catch (e) {}
+  } catch (e) {
+    console.error(e);
+  }
 };
