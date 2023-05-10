@@ -1,21 +1,19 @@
 // get the popup setting value from the storage
-chrome.storage.sync.get("popupActive", function (result) {
+const popupActiveCallback = (result) => {
   if (result.popupActive == undefined || result.popupActive == true) {
     //listen for mouseup and call showTextPopup function and send the event object to it
     document.addEventListener("mouseup", showTextPopup);
   }
-});
+};
+chrome.storage.sync.get("popupActive", popupActiveCallback);
 
 //variable to hold the dark mode setting value
 let darkMode = true;
+const darkModeGetCallback = (result) => {
+  darkMode = result.darkModeActive ?? true;
+};
 //get the dark mode setting value from the storage
-chrome.storage.sync.get("darkModeActive", function (result) {
-  if (result.darkModeActive == undefined) {
-    darkMode = true;
-  } else {
-    darkMode = result.darkModeActive;
-  }
-});
+chrome.storage.sync.get("darkModeActive", darkModeGetCallback);
 
 // function to show the text popup
 function showTextPopup(event) {
@@ -74,8 +72,8 @@ function showTextPopup(event) {
       popup.style.left =
         event.pageX - popup.getBoundingClientRect().width + "px";
     }
-    //add an event listener to the popup
-    popup.addEventListener("click", function (event) {
+
+    const popupClickHandler = (event) => {
       // get the id of the button that was clicked (that is the prompt) and send it to the showPopup function along with the text that was selected
       showPopup(event.target.id, textHighlighted);
       if (window.getSelection) {
@@ -84,7 +82,10 @@ function showTextPopup(event) {
           document.selection.empty();
       }
       popup.remove();
-    });
+    };
+
+    //add an event listener to the popup
+    popup.addEventListener("click", popupClickHandler);
   }
 }
 
@@ -172,6 +173,17 @@ function showPopup(prompt, textToInject) {
     // append the popup element to the document body
     document.body.parentNode.appendChild(popup);
 
+    const iframeLoadEventHandler = () => {
+      // we wait a second to make sure the iframe is fully loaded, maybe this is not needed
+      setTimeout(() => {
+        // send a message to the iframe to inject the text
+        iframe.contentWindow.postMessage(
+          { textToInject: textToInject, prompt: prompt },
+          "*"
+        );
+      }, 1000);
+    }
+
     // use setTimeout to show the popup after a small delay
     // this will trigger the CSS transition and animate the transform property
     setTimeout(() => {
@@ -181,16 +193,7 @@ function showPopup(prompt, textToInject) {
         //get the iframe element
         const iframe = popup.querySelector("iframe");
         //wait for the iframe to load
-        iframe.addEventListener("load", function () {
-          // we wait a second to make sure the iframe is fully loaded, maybe this is not needed
-          setTimeout(() => {
-            // send a message to the iframe to inject the text
-            iframe.contentWindow.postMessage(
-              { textToInject: textToInject, prompt: prompt },
-              "*"
-            );
-          }, 1000);
-        });
+        iframe.addEventListener("load", iframeLoadEventHandler);
       }
     }, 10);
   } catch (e) {}

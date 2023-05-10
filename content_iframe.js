@@ -1,12 +1,9 @@
 //listen for a windows message and print it to the console
-window.addEventListener(
-  "message",
-  function (event) {
-    // before injecting the text, transform the short prompt to the full prompt text and add it to the text to inject
-    injectText(promptToText(event.data.prompt) + event.data.textToInject);
-  },
-  false
-);
+const messageListener = (event) => {
+  injectText(promptToText(event.data.prompt) + event.data.textToInject);
+};
+
+window.addEventListener("message", messageListener, false);
 
 // function to inject text into the text area and send the message
 function injectText(text) {
