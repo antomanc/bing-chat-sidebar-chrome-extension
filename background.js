@@ -1,7 +1,7 @@
-const getDarkModeValue = () => {
-  chrome.storage.sync.get("darkModeActive", ({ darkModeActive }) => {
-    return darkModeActive === 'true' ? true : false;
-  });
+const getDarkModeValue = async () => {
+  const result = await chrome.storage.sync.get("darkModeActive");
+
+  return result.darkModeActive;
 };
 
 const showPopup = (darkMode, prompt, textToInject) => {
@@ -129,8 +129,8 @@ const onInstalledHandler = async () => {
 };
 chrome.runtime.onInstalled.addListener(onInstalledHandler);
 
-const contextMenuClickHandler = ({ selectionText, menuItemId: prompt }, { id: tabId }) => {
-  const darkModeActive = getDarkModeValue();
+const contextMenuClickHandler = async ({ selectionText, menuItemId: prompt }, { id: tabId }) => {
+  const darkModeActive = await getDarkModeValue();
 
   chrome.scripting.executeScript(
     {
@@ -145,8 +145,8 @@ const contextMenuClickHandler = ({ selectionText, menuItemId: prompt }, { id: ta
 chrome.contextMenus.onClicked.addListener(contextMenuClickHandler);
 
 // listen for the extension to be clicked and run the function showPopup
-const actionClickHandler = ({ id: tabId }) => {
-  const darkModeActive = getDarkModeValue();
+const actionClickHandler = async ({ id: tabId }) => {
+  const darkModeActive = await getDarkModeValue();
 
   // pass the value of "darkModeActive" as an argument to "showPopup"
   chrome.scripting.executeScript(
