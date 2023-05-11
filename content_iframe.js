@@ -1,16 +1,50 @@
-//listen for a windows message and print it to the console
-const messageListener = (event) => {
-  injectText(promptToText(event.data.prompt) + event.data.textToInject);
+const waitForElement = (selector, context = document) => {
+  return new Promise((resolve) => {
+    if (context.querySelector(selector)) {
+      const element = context.querySelector(selector);
+
+      resolve(element);
+      return;
+    }
+
+    const observer = new MutationObserver((mutations) => {
+      const foundElement = mutations.find((record) => !!Array.from(record.addedNodes).find((node) => node.matches(selector)));
+
+      if (foundElement) {
+        resolve(foundElement);
+        observer.disconnect();
+        return;
+      }
+    });
+
+    observer.observe(context.getRootNode(), {
+      childList: true,
+      subtree: true,
+    });
+  });
 };
 
-window.addEventListener("message", messageListener, false);
-
-// function to inject text into the text area and send the message
-const injectText = (text) => {
-  // if the text is empty or not a string, or NaN, return
-  if (!text || typeof text !== "string" || text == "NaN") {
+const injectText = (prompt, textToInject) => {
+  // if the prompt is empty or not a string, or NaN, return
+  if (!prompt || typeof prompt !== "string" || prompt == "NaN") {
     return;
   }
+  if (!textToInject || typeof textToInject !== "string" || textToInject == "NaN") {
+    return;
+  }
+
+  if (prompt === 'summarize') {
+    prompt = 'Summarize the following text: ';
+  } else if (prompt === 'answer') {
+    prompt = 'Answer the following question: ';
+  } else if (prompt === 'explain') {
+    prompt = 'Explain this: ';
+  } else if (prompt === 'translate') {
+    prompt = 'Translate the following text: ';
+  } else {
+    return;
+  }
+
   // select all the elements needed to get to the text area
   const firstElement = document.querySelector(".cib-serp-main").shadowRoot;
   const secondElement = firstElement.querySelector(
@@ -19,23 +53,19 @@ const injectText = (text) => {
   // get the text area
   const textArea = secondElement.querySelector("textarea");
   // set the text area value to the text to inject
-  textArea.value = text;
+  textArea.value = prompt + textToInject;
   // trigger the event to update the text area
   const event = new Event("input", { bubbles: true });
   textArea.dispatchEvent(event);
   // click the send button
   secondElement.querySelector(".button.primary").click();
-}
+};
 
-// function to transform the short prompt to the full prompt text
-const promptToText = (prompt) => {
-  if (prompt === 'summarize') {
-    return 'Summarize the following text: ';
-  } else if (prompt === 'answer') {
-    return 'Answer the following question: ';
-  } else if (prompt === 'explain') {
-    return 'Explain this: ';
-  } else if (prompt === 'translate') {
-    return 'Translate the following text: ';
-  }
-}
+//listen for a windows message and print it to the console
+const messageListener = async (event) => {
+  await waitForElement('.cib-serp-main');
+
+  injectText(event.data.prompt, event.data.textToInject);
+};
+
+window.addEventListener("message", messageListener, false);
